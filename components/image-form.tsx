@@ -3,14 +3,18 @@
 import NextImage from "next/image";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { PlusCircle, Trash2 } from "lucide-react";
-import sharp from "sharp";
+import { Lock, LockOpen, PlusCircle, Trash2 } from "lucide-react";
+
 
 export default function ImageForm() {
     const [image, setImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("");
-    const [dimensions, setDimensions] = useState<{width: number; height: number}[]>([]);
     const [previewDimensions, setPreviewDimensions] = useState<{width: number; height: number}>({width:0,height:0})
+    const [dimensions, setDimensions] = useState<{
+        width: number,
+        height: number,
+        locked: boolean
+    }[]>([]);
 
     
 
@@ -35,12 +39,20 @@ export default function ImageForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const formData = new FormData()
         if (image) {
-            formData.append("image", image)
-            formData.append("dimensions",JSON.stringify(dimensions))
+            const formData = new FormData()
 
-            const res = await fetch("/api",{method:"post",body:formData})
+            const dimensionsOnly = dimensions.map(dim=>{
+                return {
+                    width:dim.width as number,
+                    height:dim.height as number
+                }
+            })
+            
+            formData.append("image", image)
+            formData.append("dimensions",JSON.stringify(dimensionsOnly))
+
+            const res = await fetch("/api/resize",{method:"post",body:formData})
 
             if (res){
                 const blob = await res.blob();
@@ -95,7 +107,7 @@ export default function ImageForm() {
                         <NextImage
                         src={previewUrl}
                         alt="uploaded preview"
-                        width={100} height={100}/>
+                        width={250} height={250}/>
                     </div>
                 )
                 }
@@ -116,13 +128,50 @@ export default function ImageForm() {
                             placeholder="Width"
                             value={dim.width}
                             onChange={(e) => {
-                                if (parseInt(e.target.value) <= 0) return;
+                                const newWidth = parseInt(e.target.value) || 0;
+                                if (newWidth <= 0) return;
+
                                 const newDimensions = [...dimensions];
-                                newDimensions[index].width = parseInt(e.target.value) || 0;
+
+                                if (dim.locked){
+                                    const ratio = previewDimensions.height / previewDimensions.width;
+                                    const newHeight = ratio * newWidth;
+
+                                    newDimensions[index].width = newWidth;
+                                    newDimensions[index].height = Math.round(newHeight);
+                                }else{
+                                    newDimensions[index].width = newWidth;
+                                }
                                 setDimensions(newDimensions);
+
                             }}
                             className="w-full px-2 py-1 text-sm text-gray-900 border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
                             
+                            {
+                                dim.locked?
+                                <Button
+                                onClick={()=>{
+                                    const newDimensions = [...dimensions];
+                                    newDimensions[index].locked = false;
+                                    setDimensions(newDimensions);
+                                }}
+                                type="button"
+                                variant="outline">
+                                    <Lock/>
+                                </Button>
+                                :
+                                <Button
+                                onClick={()=>{
+                                    const newDimensions = [...dimensions];
+                                    newDimensions[index].locked = true;
+                                    setDimensions(newDimensions);
+                                }}
+                                type="button"
+                                variant="outline">
+                                    <LockOpen/>
+                                </Button>
+                            }
+
                             <label className="text-sm text-gray-900 dark:text-white"
                             htmlFor="height">
                             H:
@@ -133,14 +182,27 @@ export default function ImageForm() {
                             placeholder="Height"
                             value={dim.height}
                             onChange={(e) => {
-                                if (parseInt(e.target.value) <= 0) return;
+                                const newHeight = parseInt(e.target.value) || 0;
+                                if (newHeight <= 0) return;
+
                                 const newDimensions = [...dimensions];
-                                newDimensions[index].height = parseInt(e.target.value) || 0;
+
+                                if (dim.locked){
+                                    const ratio = previewDimensions.width / previewDimensions.height;
+                                    const newWidth = ratio * newHeight;
+                                    
+                                    newDimensions[index].height = newHeight;
+                                    newDimensions[index].width = Math.round(newWidth);
+                                }else{
+                                    newDimensions[index].height = newHeight;
+                                }
                                 setDimensions(newDimensions);
                             }}
                             className="w-full px-2 py-1 text-sm text-gray-900 border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"/>
 
-                            <Button className="text-red-500 bg-transparent hover:bg-red-500/10"
+                            <Button 
+                            type="button"
+                            className="text-red-500 bg-transparent hover:bg-red-500/10"
                             onClick={()=>{
                                 const newDimensions = dimensions.filter((_, i) => i !== index);
                                 setDimensions(newDimensions);
@@ -153,13 +215,13 @@ export default function ImageForm() {
                     type="button"
                     className="w-full"
                     onClick={()=>{
-                        setDimensions([...dimensions, {width: 0, height: 0}]);
+                        setDimensions([...dimensions, {width: 0, height: 0,locked:true}]);
                     }}>
                         Add Export Dimension <PlusCircle/>
                     </Button>
 
                     <Button
-                    className="w-full  bg-blue-500"
+                    className="w-full  bg-blue-500 hover:bg-blue-600"
                     disabled={dimensions.length === 0 || !image}
                     type="submit">
                         Export Images

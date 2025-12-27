@@ -14,12 +14,16 @@ export async function POST(req: Request) {
     }
     
     // Parse dimensions data into list of dictionaries
-    const parseDim = JSON.parse(dimensions) as [{width:number,height:number}]
+    const parseDim = JSON.parse(dimensions).map((dim: any) => ({
+        width: Number(dim.width),
+        height: Number(dim.height)
+    }));
     // convert original image to buffer
     const buffer = Buffer.from(await file.arrayBuffer());
     
+    
     // generate resized images according to provided dimensions as buffer
-    const resizedImageBuffers = await Promise.all(parseDim.map(async (dim)=>{
+    const resizedImageBuffers = await Promise.all(parseDim.map(async (dim: { width: number | sharp.ResizeOptions | null | undefined; height: number | null | undefined; })=>{
         return await sharp(buffer)
         .resize(dim.width,dim.height)
         .toBuffer();

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function Home() {
   return (
     <div
-    className="bg-white flex justify-center min-h-screen py-5">
+    className="bg-white flex justify-center items-center min-h-screen py-5">
       <Card
       className="min-w-[50vw] h-fit">
         <CardHeader>
