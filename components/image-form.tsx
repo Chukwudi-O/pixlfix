@@ -50,7 +50,7 @@ export default function ImageForm() {
                 // Create a temporary anchor element
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', `${dimensions[0].width}x${dimensions[0].height}_${image.name}`); // Set the download filename
+                link.setAttribute('download', res.headers.get("FileName") || 'download.zip'); // Set the download filename
 
                 // Append link to body and trigger click
                 document.body.appendChild(link);
@@ -150,6 +150,7 @@ export default function ImageForm() {
                         </div>
                     ))}
                     <Button
+                    type="button"
                     className="w-full"
                     onClick={()=>{
                         setDimensions([...dimensions, {width: 0, height: 0}]);
