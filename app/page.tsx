@@ -1,24 +1,31 @@
-import ImageForm from "@/components/image-form";
+import Resizer from "@/components/resizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 
-export default function Home() {
+export default function ResizerPage() {
   return (
     <div
-    className="bg-white flex justify-center items-center min-h-screen py-5">
+    className="bg-white flex flex-col gap-5  items-center min-h-screen py-5 w-full">
+      <h1
+      className="font-bold text-5xl">
+          PixlFix
+      </h1>
+
       <Card
       className="min-w-[50vw] h-fit">
         <CardHeader>
-          <CardTitle>PixlFix</CardTitle>
+          <CardTitle>Resizer</CardTitle>
           <CardDescription>
-            A app for resizing images into many different sizes at once. Accepts 
+            Resize and export images in multiple dimensions at once. Accepts 
             PNGs, JPEGs, GIFs, WebPs and SVGs
           </CardDescription>
         </CardHeader>
 
+        <hr className="border-2"/>
+
         <CardContent>
 
-          <ImageForm/>
+          <Resizer/>
 
         </CardContent>
       </Card>

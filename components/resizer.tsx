@@ -4,9 +4,10 @@ import NextImage from "next/image";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Lock, LockOpen, PlusCircle, Trash2 } from "lucide-react";
+import { Input } from "./ui/input";
 
 
-export default function ImageForm() {
+export default function Resizer() {
     const [image, setImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("");
     const [previewDimensions, setPreviewDimensions] = useState<{width: number; height: number}>({width:0,height:0})
@@ -58,7 +59,7 @@ export default function ImageForm() {
                 const blob = await res.blob();
                 const url = window.URL.createObjectURL(blob);
                 
-                console.log(await image.name)
+                
                 // Create a temporary anchor element
                 const link = document.createElement('a');
                 link.href = url;
@@ -83,7 +84,7 @@ export default function ImageForm() {
 
             <form onSubmit={handleSubmit}>
                 <label htmlFor="imageUpload" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Image</label>
-                <input
+                <Input
                 type="file"
                 id="imageUpload" 
                 onChange={handleImageChange}
@@ -122,7 +123,7 @@ export default function ImageForm() {
                             htmlFor="width">
                                 W:
                             </label>
-                            <input
+                            <Input
                             type="number"
                             id="width"
                             placeholder="Width"
@@ -176,7 +177,7 @@ export default function ImageForm() {
                             htmlFor="height">
                             H:
                             </label>
-                            <input
+                            <Input
                             type="number"
                             id="height"
                             placeholder="Height"

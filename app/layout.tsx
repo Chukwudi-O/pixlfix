@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Open_Sans } from "next/font/google";
 import "./globals.css";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SideMenu } from "@/components/navigation";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -22,7 +24,12 @@ export default function RootLayout({
       <body
         className={`${openSans.className} antialiased`}
       >
-        {children}
+        <SidebarProvider
+        defaultOpen={false}>
+          <SideMenu/>
+          
+          {children}
+        </SidebarProvider>
       </body>
     </html>
   );
