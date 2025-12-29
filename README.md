@@ -39,7 +39,7 @@ TypeScript
 
 Sharp (image processing)
 
-JSZip (ZIP file generation)
+AdmZip (ZIP file generation)
 
 📦 Supported Input Formats
 
