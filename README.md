@@ -1,22 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+PixlFix 🖼️✨
 
-Live Website: https://pixlfix.vercel.app
+PixlFix is a Next.js web application that allows users to quickly resize a single image into multiple dimensions at once and convert it into different image formats. All processed images are bundled and returned as a ZIP file for easy download.
 
-## Getting Started
+Perfect for developers, designers, and content creators who need assets exported in multiple sizes and formats with minimal effort.
 
-First, run the development server:
+🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+📐 Multi-size Image Resizing
+Resize one image into several dimensions in a single operation.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🗜️ ZIP Export
+All resized images are automatically packaged into a downloadable ZIP file.
 
-This app will allow users to perform bulk operations on images which include but are not limited to resizing and type conversions.
-Currently you can upload an image of the supported types (png, jpeg, svg, webp, gif) and resize them into multiple dimensions of the users choosing. These resized images will then be returned to the user in a zipped folder.
+🔄 Image Format Conversion
+Convert images to any of the supported formats:
+
+PNG
+
+JPEG
+
+GIF
+
+WebP
+
+🖼️ Live Image Preview
+Preview the uploaded image before processing.
+
+⚡ Fast & Efficient
+Built with Next.js and optimized image processing.
+
+🧰 Tech Stack
+
+Next.js
+
+React
+
+TypeScript
+
+Sharp (image processing)
+
+JSZip (ZIP file generation)
+
+📦 Supported Input Formats
+
+PNG
+
+JPEG / JPG
+
+GIF
+
+WebP
+
+📤 Output Formats
+
+Users can export resized images in any of the following formats:
+
+PNG
+
+JPEG
+
+GIF
+
+WebP
+
+🛠️ Installation
+> git clone https://github.com/your-username/pixlfix.git
+> cd pixlfix
+> npm install
+
+▶️ Running the App
+> npm run dev
+
+
+Open your browser and navigate to:
+
+http://localhost:3000
+
+🧪 Usage
+
+Upload an image (PNG, JPEG, GIF, or WebP)
+
+Select one or more output dimensions
+
+Process the image
+
+Download the generated ZIP file containing all resized images
+
+
+🔒 Notes & Limitations
+
+Large images may take longer to process depending on server resources.
+
+Maximum file size limits may apply (configurable).
+
+
