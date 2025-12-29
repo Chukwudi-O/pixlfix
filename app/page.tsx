@@ -1,15 +1,14 @@
 import Resizer from "@/components/resizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image";
 
 
 export default function ResizerPage() {
   return (
     <div
     className="bg-white flex flex-col gap-5  items-center min-h-screen py-5 w-full">
-      <h1
-      className="font-bold text-5xl">
-          PixlFix
-      </h1>
+      <Image src="/pixlfix_logo.png" alt="PixlFix Logo" width={100} height={100}/>
+      
 
       <Card
       className="min-w-[50vw] h-fit">
